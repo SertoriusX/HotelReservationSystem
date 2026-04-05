@@ -1,0 +1,22 @@
+<div class="card mt-3">
+  <div class="card-body">
+    <h6 class="card-title mb-3">➕ Add Room Image</h6>
+    <form #formImage="ngForm" (ngSubmit)="createImage(formImage)">
+      <div class="mb-3">
+        <input type="text" name="url" ngModel required 
+               placeholder="Enter image URL" class="form-control">
+      </div>
+      <div class="form-check mb-3">
+        <input type="checkbox" name="isMain" [(ngModel)]="isMain" 
+               class="form-check-input" id="isMainCheck">
+        <label class="form-check-label" for="isMainCheck">
+          Set as main image
+        </label>
+      </div>
+      <button type="submit" [disabled]="formImage.invalid" 
+              class="btn btn-primary btn-sm">
+        Add Image
+      </button>
+    </form>
+  </div>
+</div>

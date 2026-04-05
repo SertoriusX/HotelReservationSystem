@@ -1,0 +1,193 @@
+<div class="room-user-detail-page">
+  @if (roomUserState.room()) {
+    <div class="detail-container">
+      <div class="detail-grid">
+        <!-- Left Column -->
+        <div class="detail-left">
+          <!-- Image Gallery -->
+          <app-room-image-to-see-user [images]="images()"></app-room-image-to-see-user>
+          
+          <!-- Description -->
+          @if (roomUserState.room()!.description) {
+            <div class="detail-card">
+              <h3>About this room</h3>
+              <p>{{ roomUserState.room()!.description }}</p>
+            </div>
+          }
+          
+          <!-- Amenities -->
+          <div class="detail-card">
+            <h3>Amenities</h3>
+            <div class="amenities-list">
+              @if (roomUserState.room()!.hasWifi) { 
+                <span class="amenity-item">📶 WiFi</span> 
+              }
+              @if (roomUserState.room()!.hasAirConditioning) { 
+                <span class="amenity-item">❄️ AC</span> 
+              }
+              @if (roomUserState.room()!.hasTv) { 
+                <span class="amenity-item">📺 TV</span> 
+              }
+              @if (roomUserState.room()!.hasKitchen) { 
+                <span class="amenity-item">🍳 Kitchen</span> 
+              }
+              @if (roomUserState.room()!.hasSwimmingPool) { 
+                <span class="amenity-item">🏊 Pool</span> 
+              }
+              @if (roomUserState.room()!.hasBar) { 
+                <span class="amenity-item">🍸 Bar</span> 
+              }
+              @if (roomUserState.room()!.isNonSmoking) { 
+                <span class="amenity-item">🚭 Non-Smoking</span> 
+              }
+            </div>
+          </div>
+          
+          <!-- Location -->
+          @if (roomUserState.room()!.latitude && roomUserState.room()!.longitude) {
+            <div class="location-card">
+              <h3>📍 Location</h3>
+              
+              @if (distanceToCityCenter !== null) {
+                <div class="distance-badge">
+                  <span>🏙️ Distance from city center ({{ roomUserState.room()!.cityName }}): </span>
+                  <strong>{{ (distanceToCityCenter / 1000).toFixed(1) }} km</strong>
+                </div>
+              } @else {
+                <div class="distance-badge">
+                  <span>🏙️ City center distance unavailable</span>
+                </div>
+              }
+              
+              <google-map
+                height="350px"
+                width="100%"
+                [center]="mapCenter"
+                [zoom]="mapZoom"
+                [options]="mapOptions"
+                class="map-frame"
+              >
+                <map-marker 
+                  [position]="mapCenter" 
+                  [title]="roomUserState.room()!.name"
+                  [options]="roomMarkerOptions"
+                >
+                </map-marker>
+                
+                @if(cityCenterLocation) {
+                  <map-marker 
+                    [position]="cityCenterLocation" 
+                    [title]="'City Center: ' + roomUserState.room()!.cityName"
+                    [options]="cityMarkerOptions"
+                  >
+                  </map-marker>
+                  <map-polyline [path]="[mapCenter, cityCenterLocation]" [options]="polylineOptions"></map-polyline>
+                }
+              </google-map>
+              
+              @if(cityCenterLocation) {
+                <div class="directions-btn">
+                  <a 
+                    [href]="'https://www.google.com/maps/dir/?api=1&origin=' + mapCenter.lat + ',' + mapCenter.lng + '&destination=' + cityCenterLocation.lat + ',' + cityCenterLocation.lng" 
+                    target="_blank"
+                    class="btn-directions"
+                  >
+                    🏙️ Directions to City Center
+                  </a>
+                </div>
+              }
+            </div>
+          }
+        </div>
+        
+        <!-- Right Column - Booking Card -->
+        <div class="detail-right">
+          <div class="booking-card-royal">
+            <!-- Header -->
+            <div class="booking-header">
+              <div>
+                <h1>{{ roomUserState.room()!.name }}</h1>
+                <p class="hotel-name">🏨 {{ roomUserState.room()!.hotelName }}</p>
+              </div>
+              <app-wishlist [roomId]="roomUserState.room()!.id"></app-wishlist>
+            </div>
+            
+            <!-- Price & Capacity -->
+            <div class="price-capacity-grid">
+              <div class="price-box">
+                <span class="label">💰 Price</span>
+                <span class="value">${{ roomUserState.room()!.price }}<span>/night</span></span>
+              </div>
+              <div class="capacity-box">
+                <span class="label">👥 Capacity</span>
+                <span class="value">{{ roomUserState.room()!.capacity }} <span>guests</span></span>
+              </div>
+            </div>
+            
+            <!-- Room Details -->
+            <div class="room-details">
+              <div class="detail-row">
+                <span class="label">🏷️ Room Type</span>
+                <span class="value">{{ roomUserState.room()!.type }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">🛏️ Bedrooms</span>
+                <span class="value">{{ roomUserState.room()!.numberOfBedrooms }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">🛏️ Beds</span>
+                <span class="value">{{ roomUserState.room()!.numberOfBeds }}</span>
+              </div>
+            </div>
+            
+            <!-- Book Now Button -->
+            <button 
+              class="btn-book-now"
+              (click)="openBookingModal()"
+            >
+              Book Now
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Reviews Section -->
+      <div class="reviews-section">
+        <app-review-components [roomId]="roomUserState.room()!.id" [hotelId]="roomUserState.room()!.hotelId"></app-review-components>
+      </div>
+    </div>
+
+    <!-- Booking Modal -->
+    @if(showBookingModal()) {
+      <div class="modal-overlay" (click)="closeBookingModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h5>Book {{ roomUserState.room()!.name }}</h5>
+            <button type="button" class="modal-close" (click)="closeBookingModal()">✕</button>
+          </div>
+          <div class="modal-body">
+            <app-booking-component-create 
+              [roomId]="roomUserState.room()!.id"
+              [hotelId]="roomUserState.room()!.hotelId"
+              [pricePerNight]="roomUserState.room()!.price"
+              [capacity]="roomUserState.room()!.capacity"
+              [acceptedPayments]="acceptedPayments"
+              [allowPayNow]="allowPayNow"
+              [allowSaveCard]="allowSaveCard"
+              [saveCardFeePercent]="saveCardFeePercent"
+              [autoPayDaysBefore]="autoPayDaysBefore"
+              (close)="closeBookingModal()"
+              (bookingCreated)="closeBookingModal()"
+            >
+            </app-booking-component-create>
+          </div>
+        </div>
+      </div>
+    }
+  } @else {
+    <!-- Loading -->
+    <div class="loading-state">
+      <div class="spinner"></div>
+    </div>
+  }
+</div>

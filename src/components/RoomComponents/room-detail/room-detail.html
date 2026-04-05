@@ -1,0 +1,101 @@
+<div class="room-owner-detail">
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+    </div>
+  } @else if (error()) {
+    <div class="error-state">
+      <span>⚠️</span>
+      <p>{{ error() }}</p>
+    </div>
+  } @else if (room()) {
+    <div class="detail-container">
+      <div class="detail-main">
+        <!-- Images Section -->
+        <div class="section-card">
+          <h2>Room Images</h2>
+          <app-room-image-to-see [images]="roomImages()"></app-room-image-to-see>
+        </div>
+        
+        <!-- Info Section -->
+        <div class="section-card">
+          <div class="section-header">
+            <h2>{{ room()!.name }}</h2>
+            @if (isOwner) {
+              <a [routerLink]="['/room-edit', room()!.id]" class="btn-edit">Edit Room</a>
+            }
+            <p class="hotel-name">🏨 {{ room()!.hotelName }}</p>
+          </div>
+          
+          @if (room()!.description) {
+            <div class="description">
+              <p>{{ room()!.description }}</p>
+            </div>
+          }
+          
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">💰 Price</span>
+              <span class="value price">${{ room()!.price }}<span>/night</span></span>
+            </div>
+            <div class="info-item">
+              <span class="label">👥 Capacity</span>
+              <span class="value">{{ room()!.capacity }} guests</span>
+            </div>
+            <div class="info-item">
+              <span class="label">🏷️ Type</span>
+              <span class="value">{{ room()!.type }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">🛏️ Bedrooms</span>
+              <span class="value">{{ room()!.numberOfBedrooms }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">🛏️ Beds</span>
+              <span class="value">{{ room()!.numberOfBeds }}</span>
+            </div>
+          </div>
+          
+          <!-- Amenities -->
+          <div class="amenities-section">
+            <h4>Amenities</h4>
+            <div class="amenities-grid">
+              @if (room()!.hasWifi) { <span class="amenity-tag">📶 WiFi</span> }
+              @if (room()!.hasAirConditioning) { <span class="amenity-tag">❄️ AC</span> }
+              @if (room()!.hasTv) { <span class="amenity-tag">📺 TV</span> }
+              @if (room()!.hasKitchen) { <span class="amenity-tag">🍳 Kitchen</span> }
+            </div>
+          </div>
+          
+          <!-- Reviews -->
+          <div class="reviews-section">
+            <app-review-components [roomId]="room()!.id" [hotelId]="room()!.hotelId"></app-review-components>
+          </div>
+          
+          <!-- Add Image -->
+          <div class="add-image-section">
+            <h4>Add Room Image</h4>
+            <app-room-create-image [rooimId]="room()!.id" (imageCreated)="onImageCreated($event)"></app-room-create-image>
+          </div>
+          
+          <!-- Back Button -->
+          <div class="back-section">
+            <a routerLink="/dash-owner" class="back-link">← Back to Dashboard</a>
+          </div>
+        </div>
+      </div>
+      
+      @if (!isOwner) {
+        <div class="booking-section">
+          <app-booking-component-create 
+            [roomId]="room()!.id" 
+            [hotelId]="room()!.hotelId"
+            [pricePerNight]="room()!.price"
+            [capacity]="room()!.capacity"
+            [acceptedPayments]="acceptedPayments">
+          </app-booking-component-create>
+        </div>
+      }
+    </div>
+  }
+</div>

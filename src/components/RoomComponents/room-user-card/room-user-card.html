@@ -1,0 +1,83 @@
+<div class="room-container">
+  <!-- Filters Sidebar -->
+  <div class="filters-sidebar">
+    <!-- Room Type Filter -->
+    <div class="filter-section">
+      <h5>🏷️ Room Type</h5>
+      <div class="filter-options">
+        @for (type of types; track type) {
+          <label class="filter-option">
+            <input 
+              type="checkbox" 
+              [checked]="selectedTypes.includes(type)"
+              (change)="toggleType(type)"
+            >
+            <span>{{ type }}</span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <!-- Amenities Filter -->
+    <div class="filter-section">
+      <h5>✨ Amenities</h5>
+      <div class="filter-options">
+        <label class="filter-option">
+          <input type="checkbox" [checked]="selectHasBar" (change)="toggleBar()">
+          <span>🍸 Bar</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" [checked]="selectHasWifi" (change)="toggleWifi()">
+          <span>📶 WiFi</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" [checked]="selectHasAirConditioning" (change)="toggleAirConditioning()">
+          <span>❄️ AC</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" [checked]="selectHasFreeParging" (change)="toggleFreeParging()">
+          <span>🅿️ Parking</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" [checked]="selectIsNonSmoking" (change)="toggleNonSmoking()">
+          <span>🚭 Non-Smoking</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" [checked]="selectHasSwimmingPool" (change)="toggleSwimmingPool()">
+          <span>🏊 Pool</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" [checked]="selectHasTv" (change)="toggleHasTv()">
+          <span>📺 TV</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Room List -->
+  <div class="room-list">
+    @if (loadingAvailability()) {
+      <div class="loading-rooms">
+        <div class="spinner"></div>
+        <p>Loading available rooms...</p>
+      </div>
+    } @else if (getFilteredRooms().length === 0) {
+      <div class="no-rooms">
+        <span>🏠</span>
+        <h4>No rooms available</h4>
+        <p class="hint">This hotel has no available rooms for the selected dates.</p>
+      </div>
+    } @else {
+      <div class="rooms-grid-container">
+        @for (room of getFilteredRooms(); track room.id) {
+          <app-room-card-item 
+            [room]="room"
+            [hotelId]="hotelId"
+            [checkIn]="checkIn"
+            [checkOut]="checkOut"
+          ></app-room-card-item>
+        }
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,235 @@
+/* Room Detail (Owner) - Royal Style */
+.room-owner-detail {
+  min-height: calc(100vh - 70px);
+  background: #f9f9f9;
+  padding: 2rem;
+}
+
+.detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.detail-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Section Card */
+.section-card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 1.5rem;
+}
+
+.section-card h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #d4a373;
+}
+
+/* Section Header */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 0.5rem;
+  border: none;
+  padding: 0;
+}
+
+.btn-edit {
+  background: #d4a373;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.btn-edit:hover {
+  background: #c4956a;
+}
+
+.hotel-name {
+  color: #777;
+  font-size: 0.9rem;
+}
+
+/* Description */
+.description {
+  margin-bottom: 1.5rem;
+}
+
+.description p {
+  color: #777;
+  line-height: 1.7;
+}
+
+/* Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-item {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.info-item .label {
+  display: block;
+  font-size: 0.8rem;
+  color: #777;
+  margin-bottom: 0.25rem;
+}
+
+.info-item .value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.info-item .value.price {
+  font-size: 1.5rem;
+  color: #d4a373;
+}
+
+.info-item .value.price span {
+  font-size: 0.85rem;
+  color: #777;
+  font-weight: 400;
+}
+
+/* Amenities */
+.amenities-section {
+  margin-bottom: 1.5rem;
+}
+
+.amenities-section h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.75rem;
+}
+
+.amenities-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.amenity-tag {
+  background: #f5f5f5;
+  color: #555;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.amenity-tag:hover {
+  background: #d4a373;
+  color: white;
+}
+
+/* Add Image Section */
+.add-image-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.add-image-section h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+/* Back Section */
+.back-section {
+  margin-top: 1.5rem;
+}
+
+.back-link {
+  color: #777;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.back-link:hover {
+  color: #d4a373;
+}
+
+/* Loading */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #eee;
+  border-top-color: #d4a373;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error State */
+.error-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.error-state span {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.error-state p {
+  color: #dc2626;
+  font-size: 1.25rem;
+}
+
+/* Booking Section */
+.booking-section {
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

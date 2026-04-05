@@ -1,0 +1,86 @@
+<div class="hotel-owner-detail">
+  @if (loading()) {
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading hotel...</p>
+    </div>
+  } @else if (error()) {
+    <div class="error-state">
+      <span>⚠️</span>
+      <p>{{ error() }}</p>
+    </div>
+  } @else if (hotelState.hotelState().length > 0) {
+    <div class="hotel-detail-container">
+      <div class="left-side">
+        <div class="section-card">
+          <h2>🏨 Hotel Details</h2>
+          @if(hotelState.hotelState()[0].images && hotelState.hotelState()[0].images.length > 0) {
+            <div class="hotel-main-image">
+              @if (hotelState.hotelState()[0].images[0]?.url) {
+                <img [src]="hotelState.hotelState()[0].images[0].url" [alt]="hotelState.hotelState()[0].name" class="hotel-card-img">
+              }
+            </div>
+          } @else {
+            <div class="hotel-card-img d-flex align-items-center justify-content-center bg-light" style="height: 150px;">
+              <span class="text-muted">🏨 No images</span>
+            </div>
+          }
+            
+          <div class="hotel-info-box">
+            <h3>{{ hotelState.hotelState()[0].name }}</h3>
+        
+            <p class="hotel-description">{{ hotelState.hotelState()[0].description }}</p>
+            <div class="hotel-meta">
+              <span class="meta-item">📍 {{ hotelState.hotelState()[0].cityName }}</span>
+              <span class="meta-item">🏷️ ID: {{ hotelState.hotelState()[0].id }}</span>
+              <span class="meta-item">📅 Created: {{ hotelState.hotelState()[0].createdAt | date:'mediumDate' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="center-side">
+        <div class="section-card rooms-section">
+          <h2>🛏️ Rooms</h2>
+          <app-room-card [hotelId]="hotelState.hotelState()[0].id"></app-room-card>
+        </div>
+
+        <div class="section-card bookings-section">
+          <h2>📋 Recent Bookings</h2>
+          <app-bookings-list [hotelId]="hotelState.hotelState()[0].id"></app-bookings-list>
+        </div>
+      </div>
+
+      <div class="right-side">
+        <div class="section-card actions-section">
+          <h2>⚙️ Actions</h2>
+          <div class="action-buttons">
+            <button routerLink="/dash-owner" class="btn btn-back">
+              ← Back to Dashboard
+            </button>
+            <button [routerLink]="['/hotel-edit', hotelState.hotelState()[0].id]" class="btn btn-edit-hotel">
+              ✏️ Edit Hotel
+            </button>
+          </div>
+
+          <div class="create-room-section">
+            <h3>➕ Add New Room</h3>
+            <app-room-create [hotelId]="hotelState.hotelState()[0].id"></app-room-create>
+          </div>
+
+          <div class="hotel-images-section">
+            <h3>🖼️ Hotel Images</h3>
+            <app-hotel-image [hotelId]="hotelState.hotelState()[0].id"></app-hotel-image>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="error-state">
+      <span>⚠️</span>
+      <p>Hotel not found</p>
+      <button routerLink="/dash-owner" class="btn btn-back">← Back to Dashboard</button>
+      <button (click)="reloadHotel()" class="btn btn-retry">🔄 Retry</button>
+    </div>
+  }
+</div>

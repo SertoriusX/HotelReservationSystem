@@ -1,0 +1,136 @@
+<button type="button" class="btn-open-modal" (click)="openModal()">
+  + Create Room
+</button>
+
+@if(showModal) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-container-royal" (click)="$event.stopPropagation()">
+      <div class="modal-header-royal">
+        <h3>Create New Room</h3>
+        <button type="button" class="btn-close-modal" (click)="closeModal()">✕</button>
+      </div>
+      
+      <div class="modal-body-royal">
+        <form #roomForm="ngForm" (ngSubmit)="createRoom(roomForm)">
+          <div class="form-section-royal">
+            <h4>Basic Information</h4>
+            <div class="form-row-royal">
+              <div class="form-group-royal">
+                <label for="name">Room Name</label>
+                <input type="text" name="name" ngModel required class="form-control-royal" placeholder="Enter room name"/>
+              </div>
+
+              <div class="form-group-royal">
+                <label for="price">Price per night ($)</label>
+                <input type="number" name="price" ngModel required class="form-control-royal" placeholder="0"/>
+              </div>
+            </div>
+
+            <div class="form-row-royal">
+              <div class="form-group-royal">
+                <label for="capacity">Capacity (guests)</label>
+                <input type="number" name="capacity" ngModel required class="form-control-royal" placeholder="0"/>
+              </div>
+
+              <div class="form-group-royal">
+                <label for="type">Room Type</label>
+                <select name="type" ngModel class="form-control-royal">
+                  <option value="">Select type</option>
+                  <option value="Standard">Standard</option>
+                  <option value="Deluxe">Deluxe</option>
+                  <option value="Suite">Suite</option>
+                  <option value="Family">Family</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row-royal">
+              <div class="form-group-royal">
+                <label for="numberOfBedrooms">Number of Bedrooms</label>
+                <input type="number" name="numberOfBedrooms" ngModel class="form-control-royal" placeholder="0"/>
+              </div>
+
+              <div class="form-group-royal">
+                <label for="numberOfBeds">Number of Beds</label>
+                <input type="number" name="numberOfBeds" ngModel class="form-control-royal" placeholder="0"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section-royal">
+            <h4>Room Location</h4>
+            <button type="button" class="btn-location" (click)="getCurrentLocation()">
+              📍 Get My Current Location
+            </button>
+            <p class="location-hint">Click on the map to set room location</p>
+            <google-map
+              height="250px"
+              width="100%"
+              [center]="mapCenter"
+              [zoom]="mapZoom"
+              [options]="mapOptions"
+              (mapClick)="onMapClick($event)">
+              @if(markerPosition) {
+                <map-marker [position]="markerPosition" [title]="'Room Location'"></map-marker>
+              }
+            </google-map>
+            @if(markerPosition) {
+              <div class="location-set">✓ Location set</div>
+            } @else {
+              <div class="location-warning">⚠ Click map to set location</div>
+            }
+          </div>
+
+          <div class="form-section-royal">
+            <h4>Amenities</h4>
+            <div class="amenities-grid-royal">
+              <label class="checkbox-label-royal">
+                <input type="checkbox" name="hasKitchen" ngModel>
+                <span>🍳 Kitchen</span>
+              </label>
+
+              <label class="checkbox-label-royal">
+                <input type="checkbox" name="hasWifi" ngModel>
+                <span>📶 WiFi</span>
+              </label>
+
+              <label class="checkbox-label-royal">
+                <input type="checkbox" name="hasAirConditioning" ngModel>
+                <span>❄️ AC</span>
+              </label>
+
+              <label class="checkbox-label-royal">
+                <input type="checkbox" name="hasTv" ngModel>
+                <span>📺 TV</span>
+              </label>
+
+              <label class="checkbox-label-royal">
+                <input type="checkbox" name="isNonSmoking" ngModel>
+                <span>🚭 Non-Smoking</span>
+              </label>
+
+              <label class="checkbox-label-royal">
+                <input type="checkbox" name="hasSwimmingPool" ngModel>
+                <span>🏊 Pool</span>
+              </label>
+
+              <label class="checkbox-label-royal">
+                <input type="checkbox" name="hasBar" ngModel>
+                <span>🍸 Bar</span>
+              </label>
+            </div>
+          </div>
+
+          @if(error()) {
+            <div class="alert-error">{{ error() }}</div>
+          }
+
+          <div class="form-actions-royal">
+            <button type="button" class="btn-cancel-royal" (click)="closeModal()">Cancel</button>
+            <button type="submit" [disabled]="roomForm.invalid" class="btn-submit-royal">Create Room</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,7 @@
+<button (click)="toggleWishlist()" class="wishlist-btn">
+  @if (isLiked()) {
+    <span>❤️ Liked</span>
+  } @else {
+    <span>🤍 Add to Wishlist</span>
+  }
+</button>

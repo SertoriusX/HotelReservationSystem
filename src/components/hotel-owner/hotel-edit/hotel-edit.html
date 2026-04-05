@@ -1,0 +1,76 @@
+<div class="hotel-edit-royal">
+  <h2>✏️ Edit Hotel</h2>
+  
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+  } @else if (error()) {
+    <div class="error-state">
+      <span>⚠️</span>
+      <p>{{ error() }}</p>
+    </div>
+  } @else if (hotel()) {
+    <form #editForm="ngForm" (ngSubmit)="editHotel(editForm)" class="edit-form-royal">
+      <div class="form-section">
+        <h3>Basic Information</h3>
+        
+        <div class="form-group-royal">
+          <label for="name">Hotel Name</label>
+          <input type="text" id="name" name="name" [(ngModel)]="hotel().name" required class="form-control-royal">
+        </div>
+        
+        <div class="form-group-royal">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" [(ngModel)]="hotel().description" required class="form-control-royal" rows="4"></textarea>
+        </div>
+        
+        <div class="form-group-royal">
+          <label for="cityId">City</label>
+          <select id="cityId" name="cityId" [(ngModel)]="hotel().cityId" class="form-control-royal">
+            @for (city of cities(); track city.id) {
+              <option [value]="city.id">{{ city.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Payment Settings</h3>
+        
+        <div class="payment-toggles">
+          <label class="toggle-label">
+            <input type="checkbox" [(ngModel)]="allowPayNow" name="allowPayNow">
+            <span class="toggle-switch"></span>
+            <span class="toggle-text">💳 Pay Now</span>
+          </label>
+          
+          <label class="toggle-label">
+            <input type="checkbox" [(ngModel)]="allowSaveCard" name="allowSaveCard">
+            <span class="toggle-switch"></span>
+            <span class="toggle-text">💾 Save Card & Auto-pay</span>
+          </label>
+        </div>
+
+        @if (allowSaveCard) {
+          <div class="save-card-options">
+            <div class="form-group-royal">
+              <label>Save Card Fee (%)</label>
+              <input type="number" [(ngModel)]="saveCardFeePercent" name="saveCardFeePercent" class="form-control-royal" min="0" max="100">
+            </div>
+            <div class="form-group-royal">
+              <label>Days before check-in to charge</label>
+              <input type="number" [(ngModel)]="autoPayDaysBefore" name="autoPayDaysBefore" class="form-control-royal" min="1" max="30">
+            </div>
+          </div>
+        }
+      </div>
+      
+      <div class="form-actions-royal">
+        <button type="submit" class="btn-submit-royal" [disabled]="!editForm.valid">💾 Save Changes</button>
+        <button type="button" routerLink="/dash-owner" class="btn-cancel-royal">✕ Cancel</button>
+      </div>
+    </form>
+  }
+</div>

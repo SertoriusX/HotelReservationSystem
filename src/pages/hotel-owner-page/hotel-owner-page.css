@@ -1,0 +1,118 @@
+.owner-dashboard {
+  min-height: 100vh;
+  background: #f8f8f8;
+}
+
+.dashboard-hero {
+  background: #222;
+  padding: 2rem;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.hero-content h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+}
+
+.hero-content p {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin-top: 0.25rem;
+  color: #d4a373;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 1rem;
+}
+
+.stat-card {
+  background: rgba(212, 163, 115, 0.2);
+  border: 1px solid #d4a373;
+  padding: 1rem 1.5rem;
+  border-radius: 4px;
+  text-align: center;
+  min-width: 100px;
+}
+
+.stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #d4a373;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  opacity: 0.85;
+  color: #fff;
+}
+
+.hotels-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.section-header {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #d4a373;
+}
+
+.title-icon {
+  font-size: 1.25rem;
+}
+
+.create-hotel-section {
+  margin-bottom: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  
+  .hero-content h1 {
+    font-size: 1.5rem;
+  }
+  
+  .hero-stats {
+    justify-content: center;
+  }
+  
+  .hotels-section {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-card {
+    padding: 0.75rem 1rem;
+    min-width: 80px;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+}

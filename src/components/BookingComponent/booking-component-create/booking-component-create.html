@@ -1,0 +1,328 @@
+<div class="booking-card-royal">
+  <h5 class="card-title">📅 Book Your Stay</h5>
+  
+  <div class="calendar-section">
+    <div class="calendar-info">
+      <small>
+        📅 Calendar 
+        @if(isSelectingCheckIn) {
+          - Click to select <strong>Check-in</strong> date
+        } @else {
+          - Click to select <strong>Check-out</strong> date
+        }
+      </small>
+      @if(loadingBookings()) {
+        <span class="badge-loading">Loading...</span>
+      } @else if(bookingError()) {
+        <span class="badge-error">{{ bookingError() }}</span>
+      } @else if(bookedDates().length > 0) {
+        <span class="badge-booked">{{ bookedDates().length }} dates booked</span>
+      }
+    </div>
+    
+    <div class="calendar-nav">
+      <button (click)="prevMonth()">◀</button>
+      <strong>{{ currentMonthName }} {{ currentYear }}</strong>
+      <button (click)="nextMonth()">▶</button>
+    </div>
+    
+    <div class="calendar-grid-royal">
+      <div class="calendar-header-royal">
+        @for(day of weekDays; track day) {
+          <div class="calendar-day-header">{{ day }}</div>
+        }
+      </div>
+      <div class="calendar-body-royal">
+        @for(day of calendarDays; track $index) {
+          <div 
+            class="calendar-day"
+            [class.empty]="!day.date"
+            [class.unavailable]="day.date && isDateDisabled(day.date)"
+            [class.clickable]="day.date && !isDateDisabled(day.date)"
+            [class.checkin]="day.date === selectedCheckIn"
+            [class.checkout]="day.date === selectedCheckOut"
+            [class.in-range]="day.date && selectedCheckIn && selectedCheckOut && day.date > selectedCheckIn && day.date < selectedCheckOut"
+            [class.today]="day.date === today"
+            (click)="selectDate(day)"
+          >
+            {{ day.day }}
+          </div>
+        }
+      </div>
+    </div>
+    
+    <div class="calendar-legend">
+      <small><span class="legend-dot available"></span> Available</small>
+      <small><span class="legend-dot unavailable"></span> Not Available</small>
+      <small><span class="legend-dot today"></span> Today</small>
+      <small><span class="legend-dot selected"></span> Selected</small>
+    </div>
+  </div>
+  
+  <form #form="ngForm" class="booking-form-royal">
+    <div class="form-row">
+      <div class="form-group-royal">
+        <label for="checkIn">Check-in Date</label>
+        @if(loadingBookings()) {
+          <input type="text" class="form-control" placeholder="Loading dates..." disabled>
+          <small class="text-muted">Loading availability...</small>
+        } @else if(bookingError()) {
+          <input 
+            type="date" 
+            class="form-control"
+            id="checkIn" 
+            name="checkIn" 
+            [(ngModel)]="selectedCheckIn"
+            required
+            [min]="today"
+          >
+          <small class="text-danger">{{ bookingError() }}</small>
+        } @else {
+          <input 
+            type="date" 
+            class="form-control"
+            [class.is-invalid]="selectedCheckIn && isDateDisabled(selectedCheckIn)"
+            [class.is-valid]="selectedCheckIn && !isDateDisabled(selectedCheckIn)"
+            id="checkIn" 
+            name="checkIn" 
+            [(ngModel)]="selectedCheckIn"
+            required
+            [min]="today"
+          >
+          @if(selectedCheckIn) {
+            <small [class.text-danger]="isDateDisabled(selectedCheckIn)" 
+                   [class.text-success]="!isDateDisabled(selectedCheckIn) && !bookingError()">
+            @if(bookingError()) {
+              ⚠️ Unable to verify availability
+            } @else if(isDateDisabled(selectedCheckIn)) {
+              ❌ Not available
+            } @else {
+              ✅ Available
+            }
+            </small>
+          }
+        }
+      </div>
+      
+      <div class="form-group-royal">
+        <label for="checkOut">Check-out Date</label>
+        @if(loadingBookings()) {
+          <input type="text" class="form-control" placeholder="Loading dates..." disabled>
+          <small class="text-muted">Loading availability...</small>
+        } @else if(bookingError()) {
+          <input 
+            type="date" 
+            class="form-control"
+            id="checkOut" 
+            name="checkOut" 
+            [(ngModel)]="selectedCheckOut"
+            required
+            [min]="selectedCheckIn || today"
+          >
+          <small class="text-danger">{{ bookingError() }}</small>
+        } @else {
+          <input 
+            type="date" 
+            class="form-control"
+            [class.is-invalid]="isDateDisabled(selectedCheckOut) || isCheckoutBeforeCheckin(selectedCheckIn, selectedCheckOut)"
+            [class.is-valid]="!isDateDisabled(selectedCheckOut) && !isCheckoutBeforeCheckin(selectedCheckIn, selectedCheckOut) && selectedCheckOut"
+            id="checkOut" 
+            name="checkOut" 
+            [(ngModel)]="selectedCheckOut"
+            required
+            [min]="selectedCheckIn || today"
+          >
+          @if(selectedCheckOut) {
+            <small [class.text-danger]="isDateDisabled(selectedCheckOut) || isCheckoutBeforeCheckin(selectedCheckIn, selectedCheckOut)" 
+                   [class.text-success]="!isDateDisabled(selectedCheckOut) && !isCheckoutBeforeCheckin(selectedCheckIn, selectedCheckOut) && !bookingError()">
+            @if(bookingError()) {
+              ⚠️ Unable to verify availability
+            } @else if(isDateDisabled(selectedCheckOut)) {
+              ❌ Not available
+            } @else if(isCheckoutBeforeCheckin(selectedCheckIn, selectedCheckOut)) {
+              ❌ Must be after check-in
+            } @else {
+              ✅ Available
+            }
+            </small>
+          } @else {
+            <small class="text-muted">Select a date from the calendar</small>
+          }
+        }
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group-royal">
+        <label for="adults">Adults</label>
+        <input 
+          type="number" 
+          class="form-control"
+          id="adults" 
+          name="adults" 
+          ngModel 
+          [min]="1"
+          [max]="capacity"
+          required
+        >
+        <small class="text-muted">Max {{ capacity }} guests</small>
+      </div>
+
+      <div class="form-group-royal">
+        <label for="children">Children</label>
+        <input 
+          type="number" 
+          class="form-control"
+          id="children" 
+          name="children" 
+          ngModel 
+          [min]="0"
+          [max]="capacity"
+        >
+        <small class="text-muted">Optional</small>
+      </div>
+    </div>
+
+    @if(hasOverlapWithBookedDates(selectedCheckIn, selectedCheckOut)) {
+      <div class="alert-danger-royal">
+        ❌ <strong>Error:</strong> Selected dates overlap with existing bookings!
+      </div>
+    }
+
+    @if(selectedCheckIn && isAdvanceBooking() && hasPayment('stripe') && !hasPayment('paypal') && !hasPayment('hotel') && !hasPayment('payAtHotel')) {
+      <div class="alert-info-royal">
+        💡 <strong>Advance Booking:</strong> Book now and save your card to pay automatically 7 days before check-in, 
+        or use another payment method if available.
+      </div>
+    }
+
+    @if(selectedCheckIn && isAdvanceBooking() && hasPayment('paypal')) {
+      <div class="alert-info-royal">
+        💡 <strong>Advance Booking:</strong> You can pay now with PayPal, Hotel Direct, or Pay at Hotel. 
+        Credit Card (with optional card save) will also be available as an option.
+      </div>
+    }
+
+    @if(selectedCheckIn && selectedCheckOut && !hasAnyPaymentMethod) {
+      <div class="alert-danger-royal">
+        ❌ <strong>No Payment Available:</strong> No payment methods are available for this booking. 
+        Please contact the hotel for assistance.
+      </div>
+    }
+
+    @if(selectedCheckIn && selectedCheckOut && form.value.guests && !hasOverlapWithBookedDates(selectedCheckIn, selectedCheckOut)) {
+      <div class="alert-success-royal">
+        ✅ <strong>{{ getDuration(selectedCheckIn, selectedCheckOut) }} nights</strong>
+        👥 <strong>{{ form.value.guests }} guests</strong>
+        💰 <strong>Total: ${{ getDuration(selectedCheckIn, selectedCheckOut) * pricePerNight * form.value.guests }}</strong>
+      </div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel-royal" (click)="close.emit()">Cancel</button>
+      <button type="button" class="btn-success-royal" 
+        [disabled]="!selectedCheckIn || !selectedCheckOut || hasOverlapWithBookedDates(selectedCheckIn, selectedCheckOut) || !hasAnyPaymentMethod"
+        (click)="onConfirmBookingClick(form)">
+        💳 Proceed to Payment
+      </button>
+    </div>
+  </form>
+
+  @if(showPaymentModal()) {
+    <div class="payment-modal-overlay" (click)="cancelPayment()">
+      <div class="payment-modal-royal" (click)="$event.stopPropagation()">
+        <h3>💳 Payment Details</h3>
+        
+        <div class="booking-summary-royal">
+          <h4>Booking Summary</h4>
+          <p><strong>{{ getDuration(selectedCheckIn, selectedCheckOut) }} nights</strong></p>
+          <p>{{ form?.value?.guests || 1 }} guests</p>
+          @if(cardSaved()) {
+            <p class="total-price">Total: ${{ getTotalWithSaveCardFee() }} <small>(+{{ saveCardFeePercent }}% save card fee)</small></p>
+          } @else {
+            <p class="total-price">Total: ${{ getTotalAmount() }}</p>
+          }
+          <p class="payment-method-summary-royal">💳 Payment: {{ getPaymentMethodName() }}</p>
+        </div>
+
+        <!-- Payment Method Tabs -->
+        <div class="payment-method-tabs-royal">
+          @if(hasPayment('stripe')) {
+            <button 
+              type="button" 
+              class="tab-btn-royal" 
+              [class.active]="selectedPaymentMethod() === 'stripe'"
+              (click)="selectedPaymentMethod.set('stripe')"
+            >
+              💳 Credit Card
+            </button>
+          }
+          @if(hasPayment('paypal')) {
+            <button 
+              type="button" 
+              class="tab-btn-royal" 
+              [class.active]="selectedPaymentMethod() === 'paypal'"
+              (click)="selectedPaymentMethod.set('paypal')"
+            >
+              🅿️ PayPal
+            </button>
+          }
+          @if(hasPayment('hotel')) {
+            <button 
+              type="button" 
+              class="tab-btn-royal" 
+              [class.active]="selectedPaymentMethod() === 'hotel'"
+              (click)="selectedPaymentMethod.set('hotel')"
+            >
+              🏨 Hotel Direct
+            </button>
+          }
+          @if(hasPayment('payAtHotel')) {
+            <button 
+              type="button" 
+              class="tab-btn-royal" 
+              [class.active]="selectedPaymentMethod() === 'payAtHotel'"
+              (click)="selectedPaymentMethod.set('payAtHotel')"
+            >
+              💵 Pay at Hotel
+            </button>
+          }
+        </div>
+
+        @if(hasPayment('stripe') && selectedPaymentMethod() === 'stripe') {
+          <app-stripe-payment 
+            [amount]="getTotalAmount()"
+            [allowSaveCard]="allowSaveCard"
+            [saveCardFeePercent]="saveCardFeePercent"
+            [autoPayDaysBefore]="autoPayDaysBefore"
+            [isAdvanceBooking]="isAdvanceBooking()"
+            (paymentSuccess)="onPaymentSuccess($event)"
+            (paymentError)="onPaymentError($event)"
+            (cancel)="cancelPayment()"
+          ></app-stripe-payment>
+        } @else if(hasPayment('paypal') && selectedPaymentMethod() === 'paypal') {
+          <app-paypal-payment 
+            [amount]="getDuration(selectedCheckIn, selectedCheckOut) * pricePerNight * (form?.value?.guests || 1)"
+            (paymentSuccess)="onPaymentSuccess($event)"
+            (paymentError)="onPaymentError($event)"
+            (cancel)="cancelPayment()"
+          ></app-paypal-payment>
+        } @else if(hasPayment('hotel') && selectedPaymentMethod() === 'hotel') {
+          <app-hotel-direct-payment 
+            [amount]="getDuration(selectedCheckIn, selectedCheckOut) * pricePerNight * (form?.value?.guests || 1)"
+            (paymentSuccess)="onPaymentSuccess($event)"
+            (paymentError)="onPaymentError($event)"
+            (cancel)="cancelPayment()"
+          ></app-hotel-direct-payment>
+        } @else if(hasPayment('payAtHotel') && selectedPaymentMethod() === 'payAtHotel') {
+          <app-pay-at-hotel 
+            [amount]="getDuration(selectedCheckIn, selectedCheckOut) * pricePerNight * (form?.value?.guests || 1)"
+            (paymentSuccess)="onPaymentSuccess($event)"
+            (paymentError)="onPaymentError($event)"
+            (cancel)="cancelPayment()"
+          ></app-pay-at-hotel>
+        }
+      </div>
+    </div>
+  }
+</div>

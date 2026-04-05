@@ -1,0 +1,30 @@
+<div class="owner-hotels-section">
+  <div class="hotels-grid-royal">
+    @for (hotel of hotelState.hotels(); track hotel.id) {
+      <div class="hotel-card-royal">
+        @if(hotel.images && hotel.images.length > 0){
+          <img [src]="hotel.images[0].url" [alt]="hotel.name" class="hotel-img">
+        } @else {
+          <div class="hotel-no-img">🏨</div>
+        }
+        <div class="hotel-card-body">
+          <h5>{{ hotel.name }}</h5>
+          <p class="hotel-desc">{{ hotel.description | slice:0:100 }}...</p>
+          <p class="hotel-city">📍 {{ hotel.cityName }}</p>
+          
+          <div class="hotel-actions">
+            <button (click)="seeMore(hotel.id)" class="btn-action view">View Rooms</button>
+            <button (click)="editHotel(hotel.id)" class="btn-action edit">Edit</button>
+            <button (click)="deleteHotel(hotel.id)" class="btn-action delete">Delete</button>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="no-hotels">
+        <span>🏨</span>
+        <h4>No hotels yet</h4>
+        <p>Create your first hotel using the form above!</p>
+      </div>
+    }
+  </div>
+</div>

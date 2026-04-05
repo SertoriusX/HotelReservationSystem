@@ -1,0 +1,33 @@
+<div class="wishlist-page">
+  <h2>❤️ My Wishlist</h2>
+  
+  @if (!wishListState.wishList() || wishListState.wishList().length === 0) {
+    <div class="empty-state">
+      <span class="empty-icon">💝</span>
+      <h3>Your wishlist is empty</h3>
+      <p>Start adding rooms to your wishlist!</p>
+    </div>
+  } @else {
+    <div class="wishlist-grid">
+      @for (item of wishListState.wishList(); track item.roomId) {
+        <div class="wishlist-card">
+          <div class="card-image">
+            @if (item.imgs && item.imgs.length > 0) {
+              <img [src]="getMainImage(item.imgs)" [alt]="item.roomName" class="card-img">
+            } @else {
+              <div class="no-image">🏨</div>
+            }
+            <button class="btn-remove" (click)="deleteFromWishlist(item.roomId)" title="Remove">✕</button>
+          </div>
+          
+          <div class="card-body">
+            <h3 class="card-title">{{ item.roomName }}</h3>
+            <p class="card-hotel">🏨 {{ item.hotelName }}</p>
+            <p class="card-price">${{ item.roomPrice }}<span>/night</span></p>
+            <button (click)="seeMore(item.roomId)" class="btn-details">View Details →</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

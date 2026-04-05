@@ -1,0 +1,105 @@
+<div class="room-edit-royal">
+  <h2>✏️ Edit Room</h2>
+  
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+  } @else if (error()) {
+    <div class="error-state">
+      <span>⚠️</span>
+      <p>{{ error() }}</p>
+    </div>
+  } @else if (room()) {
+    <form #editForm="ngForm" (ngSubmit)="editRoom(editForm)" class="edit-form-royal">
+      <div class="form-section">
+        <h3>Basic Information</h3>
+        
+        <div class="form-group-royal">
+          <label for="name">Room Name</label>
+          <input type="text" id="name" name="name" [(ngModel)]="room().name" required class="form-control-royal">
+        </div>
+        
+        <div class="form-group-royal">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" [(ngModel)]="room().description" class="form-control-royal" rows="3"></textarea>
+        </div>
+        
+        <div class="form-row-royal">
+          <div class="form-group-royal">
+            <label for="price">Price per night ($)</label>
+            <input type="number" id="price" name="price" [(ngModel)]="room().price" required class="form-control-royal">
+          </div>
+          
+          <div class="form-group-royal">
+            <label for="capacity">Capacity (guests)</label>
+            <input type="number" id="capacity" name="capacity" [(ngModel)]="room().capacity" required class="form-control-royal">
+          </div>
+        </div>
+        
+        <div class="form-row-royal">
+          <div class="form-group-royal">
+            <label for="numberOfBedrooms">Bedrooms</label>
+            <input type="number" id="numberOfBedrooms" name="numberOfBedrooms" [(ngModel)]="room().numberOfBedrooms" required class="form-control-royal">
+          </div>
+          
+          <div class="form-group-royal">
+            <label for="numberOfBeds">Beds</label>
+            <input type="number" id="numberOfBeds" name="numberOfBeds" [(ngModel)]="room().numberOfBeds" required class="form-control-royal">
+          </div>
+        </div>
+        
+        <div class="form-group-royal">
+          <label for="type">Room Type</label>
+          <select id="type" name="type" [(ngModel)]="room().type" class="form-control-royal">
+            <option value="Standard">Standard</option>
+            <option value="Deluxe">Deluxe</option>
+            <option value="Suite">Suite</option>
+            <option value="Family">Family</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Amenities</h3>
+        
+        <div class="amenities-grid-royal">
+          <label class="checkbox-label-royal">
+            <input type="checkbox" name="hasWifi" [(ngModel)]="room().hasWifi">
+            <span>📶 WiFi</span>
+          </label>
+          <label class="checkbox-label-royal">
+            <input type="checkbox" name="hasAirConditioning" [(ngModel)]="room().hasAirConditioning">
+            <span>❄️ Air Conditioning</span>
+          </label>
+          <label class="checkbox-label-royal">
+            <input type="checkbox" name="hasTv" [(ngModel)]="room().hasTv">
+            <span>📺 TV</span>
+          </label>
+          <label class="checkbox-label-royal">
+            <input type="checkbox" name="hasKitchen" [(ngModel)]="room().hasKitchen">
+            <span>🍳 Kitchen</span>
+          </label>
+          <label class="checkbox-label-royal">
+            <input type="checkbox" name="isNonSmoking" [(ngModel)]="room().isNonSmoking">
+            <span>🚭 Non Smoking</span>
+          </label>
+          <label class="checkbox-label-royal">
+            <input type="checkbox" name="hasSwimmingPool" [(ngModel)]="room().hasSwimmingPool">
+            <span>🏊 Swimming Pool</span>
+          </label>
+          <label class="checkbox-label-royal">
+            <input type="checkbox" name="hasBar" [(ngModel)]="room().hasBar">
+            <span>🍸 Bar</span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="form-actions-royal">
+        <button type="submit" class="btn-submit-royal" [disabled]="!editForm.valid">💾 Save Changes</button>
+        <button type="button" (click)="cancel()" class="btn-cancel-royal">✕ Cancel</button>
+      </div>
+    </form>
+  }
+</div>

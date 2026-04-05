@@ -1,0 +1,29 @@
+<div class="owner-dashboard">
+  <div class="dashboard-hero">
+    <div class="hero-content">
+      <h1>🏢 My Hotels</h1>
+      <p>Manage your hotel empire</p>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <span class="stat-number">{{ hotelState.hotels().length }}</span>
+        <span class="stat-label">Hotels</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hotels-section">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="title-icon">🏨</span>
+        Your Hotels
+      </h2>
+    </div>
+
+    <div class="create-hotel-section">
+      <app-hotel-owner-create></app-hotel-owner-create>
+    </div>
+
+    <app-hotel-owner-card></app-hotel-owner-card>
+  </div>
+</div>

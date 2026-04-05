@@ -1,0 +1,40 @@
+<div class="auth-wrapper">
+  <div class="auth-box">
+    <div class="auth-header">
+      <h2>Create Account</h2>
+      <p>Join us today</p>
+    </div>
+
+    <form #registerForm="ngForm" (ngSubmit)="register(registerForm)" class="auth-form">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="username" name="username" ngModel required 
+               placeholder="Choose a username"
+               class="form-control"/>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" name="email" ngModel required 
+               placeholder="your@email.com"
+               class="form-control"/>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" name="password" ngModel required 
+               placeholder="Choose a password"
+               class="form-control"/>
+      </div>
+
+      <button type="submit" class="btn-auth">
+        Create Account
+      </button>
+
+      <p class="auth-link">
+        Already have an account? 
+        <a routerLink="/login">Sign in</a>
+      </p>
+    </form>
+  </div>
+</div>

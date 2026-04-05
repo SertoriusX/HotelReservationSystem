@@ -1,0 +1,279 @@
+/* Hotel Cards Container - Royal Style */
+.hotel-cards-wrapper {
+  display: flex;
+  min-height: calc(100vh - 70px);
+  background: #f9f9f9;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* Sidebar */
+.filter-sidebar {
+  width: 280px;
+  background: white;
+  padding: 1.5rem;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  position: sticky;
+  top: 1rem;
+  height: fit-content;
+  flex-shrink: 0;
+}
+
+.filter-section {
+  margin-bottom: 1.5rem;
+}
+
+.filter-section:last-child {
+  margin-bottom: 0;
+}
+
+.filter-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #d4a373;
+}
+
+.filter-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #222;
+  background: white;
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  border-color: #d4a373;
+  outline: none;
+}
+
+.filter-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.25rem 0;
+}
+
+.filter-checkbox:hover {
+  color: #d4a373;
+}
+
+.filter-checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: #d4a373;
+}
+
+.filter-checkbox span {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  margin-bottom: 1.5rem;
+}
+
+.search-icon {
+  font-size: 1rem;
+  margin-right: 0.75rem;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+/* Hotels Grid */
+.hotels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Hotel Card - Royal Style */
+.hotel-card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.hotel-card:hover {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transform: translateY(-5px);
+}
+
+.hotel-card-img {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
+
+.hotel-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+
+.hotel-card:hover .hotel-card-img img {
+  transform: scale(1.1);
+}
+
+.hotel-card-img .no-img {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  font-size: 3rem;
+}
+
+.hotel-rating {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.hotel-card-content {
+  padding: 1.25rem;
+}
+
+.hotel-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+.hotel-desc {
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hotel-city {
+  font-size: 0.9rem;
+  color: #d4a373;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.btn-view {
+  width: 100%;
+  padding: 0.75rem;
+  background: #222;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-view:hover {
+  background: #d4a373;
+}
+
+/* No Results */
+.no-results {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.no-results span {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.no-results h3 {
+  font-size: 1.5rem;
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+.no-results p {
+  color: #777;
+  font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .hotel-cards-wrapper {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .filter-sidebar {
+    width: 100%;
+    position: relative;
+  }
+  
+  .filter-checkboxes {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .filter-checkbox {
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 576px) {
+  .hotel-card-img {
+    height: 150px;
+  }
+  
+  .hotels-grid {
+    grid-template-columns: 1fr;
+  }
+}

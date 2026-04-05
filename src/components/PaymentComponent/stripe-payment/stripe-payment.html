@@ -1,0 +1,126 @@
+<div class="stripe-payment-royal">
+  <h3>Payment Details</h3>
+  
+  <div class="payment-form-royal">
+    <div class="form-group-royal">
+      <label>Card Number</label>
+      <input 
+        type="text" 
+        class="form-control-royal" 
+        placeholder="1234 5678 9012 3456" 
+        maxlength="19"
+        [(ngModel)]="cardNumber"
+        (input)="formatCardNumber($event)"
+        (keydown)="onCardKeyDown($event)"
+      >
+      @if(cardNumber() && !isValidCardNumber()) {
+        <small class="error-text">Invalid card number</small>
+      }
+    </div>
+    
+    <div class="form-row-royal">
+      <div class="form-group-royal">
+        <label>Expiry Date</label>
+        <input 
+          type="text" 
+          class="form-control-royal" 
+          placeholder="MM/YY" 
+          maxlength="5"
+          [(ngModel)]="cardExpiry"
+          (input)="formatExpiry($event)"
+          (keydown)="onExpiryKeyDown($event)"
+        >
+      </div>
+      <div class="form-group-royal">
+        <label>CVV</label>
+        <input 
+          type="text" 
+          class="form-control-royal" 
+          placeholder="123" 
+          maxlength="4"
+          [(ngModel)]="cardCvv"
+          (input)="formatCvv($event)"
+          (keydown)="onCvvKeyDown($event)"
+        >
+      </div>
+    </div>
+    
+    <div class="form-group-royal">
+      <label>Cardholder Name</label>
+      <input 
+        type="text" 
+        class="form-control-royal" 
+        placeholder="John Doe"
+        [(ngModel)]="cardName"
+      >
+    </div>
+
+    @if(allowSaveCard && isAdvanceBooking) {
+      <div class="save-card-section">
+        <label class="checkbox-label-royal">
+          <input 
+            type="checkbox" 
+            [(ngModel)]="saveCard"
+            (change)="onSaveCardChange()"
+          >
+          <span>Save card for later payment (+{{ saveCardFeePercent }}%)</span>
+        </label>
+        @if(saveCardFeePercent > 0 && saveCard()) {
+          <small class="fee-warning">
+            Price will be {{ saveCardFeePercent }}% higher (${{ (amount * saveCardFeePercent / 100).toFixed(2) }} extra per day)
+          </small>
+        }
+        <small class="auto-pay-info">
+          Don't pay now - we'll charge your card automatically {{ autoPayDaysBefore }} days before check-in.
+        </small>
+      </div>
+    }
+  </div>
+
+  @if(error()) {
+    <div class="alert-error">{{ error() }}</div>
+  }
+
+  <div class="payment-actions-royal">
+    <button class="btn-cancel-royal" (click)="onCancel()" [disabled]="processing()">
+      Cancel
+    </button>
+    
+    @if(allowSaveCard && saveCard() && isAdvanceBooking) {
+      <button 
+        class="btn-save-royal" 
+        (click)="handleSaveCard()" 
+        [disabled]="processing() || !isValidCardNumber() || !isValidExpiry() || !isValidCvv() || !isValidCardholderName()"
+      >
+        @if(processing()) {
+          Saving...
+        } @else {
+          Save Card (Pay Later ${{ amountWithFee }})
+        }
+      </button>
+      <button 
+        class="btn-pay-royal" 
+        (click)="handlePayment()" 
+        [disabled]="processing() || !isValidCardNumber() || !isValidExpiry() || !isValidCvv() || !isValidCardholderName()"
+      >
+        @if(processing()) {
+          Processing...
+        } @else {
+          Pay Now ${{ amountWithFee }}
+        }
+      </button>
+    } @else {
+      <button 
+        class="btn-pay-royal" 
+        (click)="handlePayment()" 
+        [disabled]="processing() || !isValidCardNumber() || !isValidExpiry() || !isValidCvv() || !isValidCardholderName()"
+      >
+        @if(processing()) {
+          Processing...
+        } @else {
+          Pay ${{ amountWithFee }}
+        }
+      </button>
+    }
+  </div>
+</div>

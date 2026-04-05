@@ -1,0 +1,27 @@
+<button type="button" class="btn-create-image" (click)="toggleForm()">
+  🖼️ Create Image
+</button>
+
+@if(showForm) {
+  <div class="image-form-container">
+    <form #formImage="ngForm" (ngSubmit)="createImage(formImage)" class="image-form-royal">
+      <h3>Add Hotel Image</h3>
+      
+      <div class="form-group-royal">
+        <label for="url">Image URL</label>
+        <input type="text" id="url" name="url" ngModel required class="form-control-royal" placeholder="https://example.com/image.jpg"/>
+      </div>
+
+      <div class="form-group-royal checkbox-group">
+        <label class="checkbox-label-royal">
+          <input type="checkbox" name="isMain" ngModel>
+          <span>Set as background image</span>
+        </label>
+      </div>
+
+      <button type="submit" [disabled]="formImage.invalid" class="btn-submit-royal">
+        ➕ Add Image
+      </button>
+    </form>
+  </div>
+}

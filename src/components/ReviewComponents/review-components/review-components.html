@@ -1,0 +1,65 @@
+<div class="reviews-royal">
+@if(roomId) {
+  <div class="review-form-card">
+    <h4>Write a Review</h4>
+    <form #reviewForm="ngForm" (ngSubmit)="createReview(reviewForm)">
+      <div class="form-group-royal">
+        <label>Rating:</label>
+        <div class="stars-royal">
+          @for (star of [1,2,3,4,5]; track star) {
+            <span 
+              class="star-royal"
+              (click)="setRating(star)"
+              [class.active]="star <= selectedRating()">
+              ★
+            </span>
+          }
+        </div>
+        <input type="hidden" name="rating" [ngModel]="selectedRating()">
+      </div>
+      <div class="form-group-royal">
+        <label for="comment">Comment:</label>
+        <textarea 
+          id="comment" 
+          name="comment" 
+          ngModel 
+          required
+          class="form-control-royal"
+          rows="3"
+          placeholder="Share your experience..."></textarea>
+      </div>
+      <button type="submit" [disabled]="reviewForm.invalid || selectedRating() === 0" 
+              class="btn-submit-royal">
+        Submit Review
+      </button>
+    </form>
+  </div>
+}
+
+<div class="reviews-section">
+  <h4>Reviews ({{ reviews().length }})</h4>
+  @for(review of reviews(); track review.id) {
+    <div class="review-card-royal">
+      <div class="review-header">
+        <div class="review-info">
+          <div class="stars-royal">
+            @for(star of [1,2,3,4,5]; track star) {
+              <span class="star-royal" [class.active]="star <= review.rating">★</span>
+            }
+          </div>
+          <p class="review-author"><strong>{{ review.username }}</strong></p>
+          <p class="review-comment">{{ review.comment }}</p>
+          <small class="review-date">{{ review.createdAt | date:'medium' }}</small>
+        </div>
+        @if (canDelete(review)) {
+          <button class="btn-delete-review" (click)="deleteReview(review.id)">
+            ✕
+          </button>
+        }
+      </div>
+    </div>
+  } @empty {
+    <p class="no-reviews">No reviews yet. Be the first to review!</p>
+  }
+</div>
+</div>

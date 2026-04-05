@@ -1,0 +1,56 @@
+.user-dashboard {
+  min-height: 100vh;
+  background: var(--light-bg);
+}
+
+.dashboard-hero {
+  background: var(--primary-navy);
+  padding: 2rem;
+  color: white;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.hero-content p {
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.hotels-section {
+  margin-top: 1.5rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.title-icon {
+  font-size: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 1.5rem;
+  }
+  
+  .container {
+    padding: 1rem;
+  }
+}

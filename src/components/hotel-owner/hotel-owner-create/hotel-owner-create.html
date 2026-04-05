@@ -1,0 +1,171 @@
+<!-- Button to Open Modal -->
+<button 
+  type="button" 
+  class="btn-create-hotel"
+  (click)="openModal()"
+>
+  ➕ Create New Hotel
+</button>
+
+<!-- Modal -->
+@if(showModal) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="modal-header">
+        <h3>Create New Hotel</h3>
+        <button type="button" class="modal-close" (click)="closeModal()">✕</button>
+      </div>
+      
+      <!-- Body -->
+      <form #hotelForm="ngForm" (ngSubmit)="createHotel(hotelForm)" class="modal-form">
+        @if(error()) {
+          <div class="error-message">{{ error() }}</div>
+        }
+        
+        <div class="form-group">
+          <label for="name">Hotel Name</label>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            ngModel 
+            required 
+            class="form-control"
+            placeholder="Enter hotel name"
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea 
+            id="description" 
+            name="description" 
+            ngModel 
+            required 
+            class="form-control"
+            rows="3"
+            placeholder="Enter hotel description"
+          ></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="cityId">City</label>
+          <select 
+            id="cityId" 
+            name="cityId" 
+            ngModel 
+            required 
+            class="form-control"
+            (change)="onCityChange($event)"
+          >
+            <option value="">Select a city</option>
+            @for (city of cities(); track city.id) {
+              <option [value]="city.id">{{ city.name }}</option>
+            }
+          </select>
+          @if(selectedCity) {
+            <div class="city-info">
+              ✅ Location: {{ selectedCity.name }} ({{ selectedCity.latitude }}, {{ selectedCity.longitude }})
+            </div>
+          }
+        </div>
+
+        <div class="form-section">
+          <label class="section-label">Payment Methods Accepted</label>
+          <div class="payment-options">
+            @for(option of paymentOptions; track option.value) {
+              <label class="payment-option" [class.checked]="option.checked">
+                <input 
+                  type="checkbox" 
+                  [(ngModel)]="option.checked" 
+                  name="payments"
+                >
+                <span>{{ option.label }}</span>
+              </label>
+            }
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label class="section-label">💳 Credit Card Options</label>
+          
+          <div class="card-options">
+            <label class="card-option" [class.checked]="allowPayNow">
+              <input 
+                type="checkbox" 
+                [(ngModel)]="allowPayNow" 
+                name="allowPayNow"
+              >
+              <div>
+                <span>Pay Now</span>
+                <p>Guests can pay full amount immediately</p>
+              </div>
+            </label>
+            
+            <label class="card-option" [class.checked]="allowSaveCard">
+              <input 
+                type="checkbox" 
+                [(ngModel)]="allowSaveCard" 
+                name="allowSaveCard"
+              >
+              <div>
+                <span>Save Card & Pay Later</span>
+                <p>Guests save card, auto-charge before check-in</p>
+              </div>
+            </label>
+            
+            @if(allowSaveCard) {
+              <div class="card-options-extra">
+                <div>
+                  <label>Extra fee for save card option (%)</label>
+                  <input 
+                    type="number" 
+                    [(ngModel)]="saveCardFeePercent" 
+                    name="saveCardFeePercent"
+                    min="0"
+                    max="100"
+                    class="form-control"
+                    placeholder="0"
+                  >
+                  <p>Leave 0 for no extra fee</p>
+                </div>
+                
+                <div>
+                  <label>Days before check-in to auto-charge</label>
+                  <input 
+                    type="number" 
+                    [(ngModel)]="autoPayDaysBefore" 
+                    name="autoPayDaysBefore"
+                    min="1"
+                    max="30"
+                    class="form-control"
+                    placeholder="7"
+                  >
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button 
+            type="button" 
+            class="btn-cancel"
+            (click)="closeModal()"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            [disabled]="!hotelForm.valid"
+            class="btn-submit"
+          >
+            Create Hotel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

@@ -1,0 +1,99 @@
+.btn-create-image {
+  padding: 0.75rem 1.5rem;
+  background: #d4a373;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-create-image:hover {
+  background: #c49263;
+  transform: translateY(-2px);
+}
+
+.image-form-container {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.image-form-royal h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #d4a373;
+}
+
+.form-group-royal {
+  margin-bottom: 1rem;
+}
+
+.form-group-royal label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+  margin-bottom: 0.375rem;
+}
+
+.form-control-royal {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-control-royal:focus {
+  border-color: #d4a373;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
+}
+
+.checkbox-group {
+  margin: 1rem 0;
+}
+
+.checkbox-label-royal {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.checkbox-label-royal input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #d4a373;
+}
+
+.btn-submit-royal {
+  padding: 0.625rem 1.5rem;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-submit-royal:hover {
+  background: #333;
+}
+
+.btn-submit-royal:disabled {
+  background: #999;
+  cursor: not-allowed;
+}

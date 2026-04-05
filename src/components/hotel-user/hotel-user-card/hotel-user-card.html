@@ -1,0 +1,87 @@
+<div class="hotel-cards-wrapper">
+  <!-- Sidebar -->
+  <aside class="filter-sidebar">
+    <div class="filter-section">
+      <h5 class="filter-title">📍 City</h5>
+      <select 
+        class="filter-select"
+        [(ngModel)]="selectedCityId">
+        <option [ngValue]="null">All Cities</option>
+        @for (city of cities; track city.id) {
+          <option [ngValue]="city.id">{{ city.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="filter-section">
+      <h5 class="filter-title">💳 Payment</h5>
+      <div class="filter-checkboxes">
+        <label class="filter-checkbox">
+          <input type="checkbox" [(ngModel)]="filterPayNow">
+          <span>Pay Now</span>
+        </label>
+        <label class="filter-checkbox">
+          <input type="checkbox" [(ngModel)]="filterSaveCard">
+          <span>Save Card</span>
+        </label>
+      </div>
+    </div>
+
+
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text"
+        [(ngModel)]="searchText"
+        placeholder="Search hotels..."
+        class="search-input"
+      >
+    </div>
+
+    <!-- Grid -->
+    @if(getFilteredHotels().length > 0) {
+      <div class="hotels-grid">
+        @for(hotel of getFilteredHotels(); track hotel.id) {
+          <div class="hotel-card" (click)="seeMore(hotel.id)">
+            <!-- Image -->
+            <div class="hotel-card-img">
+              @if (hotel.images && hotel.images.length > 0) {
+                <img 
+                  [src]="hotel.images.find(img => img.isMain)?.url || hotel.images[0].url"
+                  [alt]="hotel.name"
+                >
+              } @else {
+                <div class="no-img">🏨</div>
+              }
+
+              @if (hotel.rating) {
+                <span class="hotel-rating">⭐ {{ hotel.rating }}</span>
+              }
+            </div>
+
+            <!-- Content -->
+            <div class="hotel-card-content">
+              <h3 class="hotel-name">{{ hotel.name }}</h3>
+              <p class="hotel-desc">{{ hotel.description | slice:0:70 }}...</p>
+              <p class="hotel-city">📍 {{ hotel.cityName }}</p>
+
+              <button class="btn-view">View Details →</button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <!-- Empty State -->
+      <div class="no-results">
+        <span>🔍</span>
+        <h3>No Hotels Found</h3>
+        <p>Try adjusting your filters</p>
+      </div>
+    }
+  </main>
+</div>

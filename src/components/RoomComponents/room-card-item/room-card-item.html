@@ -1,0 +1,26 @@
+<div class="room-card-royal">
+  <!-- Image -->
+  <div class="room-image">
+    @if (room.imgs && room.imgs.length > 0 && room.imgs[0]?.url) {
+      <img [src]="room.imgs[0].url" [alt]="room.name">
+    } @else {
+      <div class="no-image">🏠</div>
+    }
+  </div>
+  
+  <!-- Content -->
+  <div class="room-content">
+    <h5>{{ room.name }}</h5>
+    <p class="room-type">🏷️ {{ room.type }}</p>
+    
+    <div class="room-price">
+      ${{ room.price }}<span>/night</span>
+    </div>
+    
+    <p class="room-capacity">👥 {{ room.capacity }} guests</p>
+     
+    <button class="btn-view-room" (click)="bookNow()">
+      Book Now
+    </button>
+  </div>
+</div>

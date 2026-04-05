@@ -1,0 +1,134 @@
+/* Room Card - Royal Style */
+.room-cards-section {
+  padding: 1rem 0;
+}
+
+.room-cards-section h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+.no-rooms {
+  text-align: center;
+  padding: 2rem;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.no-rooms p {
+  color: #777;
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.room-card-item {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.room-card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.room-card-img-placeholder {
+  width: 100%;
+  height: 180px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.room-card-item:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
+}
+
+.room-card-body {
+  padding: 1.25rem;
+}
+
+.room-card-body h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.75rem;
+}
+
+.room-card-body .price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #d4a373;
+  margin-bottom: 0.5rem;
+}
+
+.room-card-body .price span {
+  font-size: 0.85rem;
+  color: #777;
+  font-weight: 400;
+}
+
+.room-card-body .capacity,
+.room-card-body .type {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.25rem;
+}
+
+.room-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.room-actions button {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.room-actions .btn-view {
+  background: #222;
+  color: white;
+}
+
+.room-actions .btn-view:hover {
+  background: #d4a373;
+}
+
+.room-actions .btn-edit {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.room-actions .btn-edit:hover {
+  background: #fcd34d;
+}
+
+.room-actions .btn-delete {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.room-actions .btn-delete:hover {
+  background: #dc2626;
+  color: white;
+}

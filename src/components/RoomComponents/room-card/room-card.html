@@ -1,0 +1,33 @@
+<div class="room-cards-section">
+  <h4>🏠 Rooms</h4>
+  
+  @if (roomStat.rooms().length === 0) {
+    <div class="no-rooms">
+      <p>No rooms available</p>
+    </div>
+  } @else {
+    <div class="rooms-grid">
+      @for (room of roomStat.rooms(); track room.id) {
+        <div class="room-card-item">
+          @if (room.imgs && room.imgs.length > 0 && room.imgs[0]?.url) {
+            <img [src]="room.imgs[0].url" [alt]="room.name" class="room-card-img">
+          } @else {
+            <div class="room-card-img-placeholder">🏠</div>
+          }
+          <div class="room-card-body">
+            <h5>{{ room.name }}</h5>
+            <p class="price">${{ room.price }} <span>/night</span></p>
+            <p class="capacity">👥 {{ room.capacity }} guests</p>
+            <p class="type">🏷️ {{ room.type }}</p>
+            
+            <div class="room-actions">
+              <button class="btn-view" (click)="seeMore(room.id)">View</button>
+              <button class="btn-edit" [routerLink]="['/room-edit', room.id]">Edit</button>
+              <button class="btn-delete" (click)="delete(room.id)">Delete</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

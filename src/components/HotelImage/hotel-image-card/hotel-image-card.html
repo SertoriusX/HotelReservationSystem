@@ -1,0 +1,13 @@
+<div class="hotel-images-grid">
+  @if(hotImgState.hotelImage().length === 0) {
+    <p class="no-images">No images yet</p>
+  } @else {
+    @for(img of hotImgState.hotelImage(); track img.id) {
+      <div class="image-item">
+        <img [src]="img.url" [alt]="'Hotel image'">
+        <button class="btn-delete" (click)="deleteImage(img.id)" title="Delete image">✕</button>
+      </div>
+    }
+  }
+</div>
+

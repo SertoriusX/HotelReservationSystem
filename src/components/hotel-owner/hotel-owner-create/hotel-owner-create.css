@@ -1,0 +1,291 @@
+/* Hotel Owner Create - Royal Style */
+:host {
+  display: block;
+}
+
+/* Create Button */
+.btn-create-hotel {
+  background: #222;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-create-hotel:hover {
+  background: #d4a373;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+/* Modal Box */
+.modal-box {
+  background: white;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #999;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: #222;
+}
+
+/* Modal Form */
+.modal-form {
+  padding: 1.25rem;
+  overflow-y: auto;
+  max-height: calc(90vh - 80px);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  border-color: #d4a373;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
+}
+
+.error-message {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.city-info {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #22c55e;
+}
+
+/* Form Sections */
+.form-section {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.section-label {
+  display: block;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.payment-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.payment-option:hover {
+  border-color: #d4a373;
+}
+
+.payment-option.checked {
+  border-color: #d4a373;
+  background: #fdf8f3;
+}
+
+.payment-option input {
+  width: 16px;
+  height: 16px;
+  accent-color: #d4a373;
+}
+
+.payment-option span {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* Card Options */
+.card-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.card-option:hover {
+  border-color: #d4a373;
+}
+
+.card-option.checked {
+  border-color: #d4a373;
+  background: #fdf8f3;
+}
+
+.card-option input {
+  width: 16px;
+  height: 16px;
+  accent-color: #d4a373;
+  margin-top: 0.25rem;
+}
+
+.card-option div span {
+  display: block;
+  font-weight: 600;
+  color: #222;
+  font-size: 0.9rem;
+}
+
+.card-option div p {
+  font-size: 0.8rem;
+  color: #777;
+  margin: 0;
+}
+
+.card-options-extra {
+  margin-left: 1.5rem;
+  padding: 0.75rem;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.card-options-extra > div {
+  margin-bottom: 0.75rem;
+}
+
+.card-options-extra label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 0.25rem;
+}
+
+.card-options-extra p {
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: 0.25rem;
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 0.75rem;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-cancel:hover {
+  background: #eee;
+}
+
+.btn-submit {
+  flex: 1;
+  padding: 0.75rem;
+  background: #d4a373;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #c4956a;
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

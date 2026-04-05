@@ -1,0 +1,36 @@
+<div class="pay-at-hotel-container">
+  <div class="icon-container">
+    <span class="icon">🏨</span>
+  </div>
+  
+  <h3>Pay at Hotel</h3>
+  
+  <div class="amount-display">
+    <span class="label">Amount to pay:</span>
+    <span class="amount">${{ amount }}</span>
+  </div>
+
+  <div class="info-box">
+    <p>📝 You will pay directly at the hotel upon check-in.</p>
+    <p>💳 Accepts: Cash, Credit Card, Debit Card</p>
+    <p>⏰ No prepayment required</p>
+  </div>
+
+  <button 
+    class="confirm-btn"
+    (click)="handlePayment()"
+    [disabled]="processing()"
+  >
+    @if(processing()) {
+      Processing...
+    } @else {
+      ✓ Confirm Booking
+    }
+  </button>
+
+  <div class="payment-actions">
+    <button class="btn btn-secondary" (click)="onCancel()">
+      Cancel
+    </button>
+  </div>
+</div>

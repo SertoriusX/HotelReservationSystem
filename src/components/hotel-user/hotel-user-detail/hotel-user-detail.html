@@ -1,0 +1,71 @@
+<div class="hotel-user-detail">
+  @if (errorMessage) {
+    <div class="error-container">
+      <div class="error-message">
+        <span class="error-icon">⚠️</span>
+        <p>{{ errorMessage }}</p>
+        <p class="hint">Make sure the backend is running on http://localhost:5009</p>
+      </div>
+    </div>
+  } @else if (hotel()) {
+    <div class="container">
+      <!-- Hotel Images and Info -->
+      @if (hotel()!.images && hotel()!.images.length > 0) {
+        <div class="hotel-images-section">
+          <!-- Main Image (Left) -->
+          <div class="main-image">
+            <img [src]="hotel()!.images[0].url" [alt]="hotel()!.name">
+          </div>
+          
+          <!-- Info Side (Right) -->
+          <div class="hotel-info-card">
+            <h1>{{ hotel()!.name }}</h1>
+            <p class="description">{{ hotel()!.description }}</p>
+            <div class="meta">
+              <span class="city">📍 {{ hotel()!.cityName }}</span>
+              @if (hotel()!.rating) {
+                <span class="rating">⭐ {{ hotel()!.rating }}</span>
+              }
+            </div>
+            
+            <!-- Payment Options -->
+            <div class="payment-badges">
+              @if (hotel()!.allowPayNow) {
+                <span class="payment-badge pay-now">💳 Pay Now</span>
+              }
+              @if (hotel()!.allowSaveCard) {
+                <span class="payment-badge save-card">💾 Save Card</span>
+              }
+            </div>
+          </div>
+        </div>
+        
+        <!-- Additional Images Grid -->
+        @if (hotel()!.images.length > 1) {
+          <div class="additional-images">
+            @for (img of hotel()!.images.slice(1, 5); track img.id) {
+              <div class="additional-img">
+                <img [src]="img.url" [alt]="hotel()!.name">
+              </div>
+            }
+          </div>
+        }
+      }
+      
+      <!-- Rooms Section -->
+      <div class="rooms-header">
+        <h2>Available Rooms</h2>
+        @if(checkIn && checkOut) {
+          <span class="dates-info">📅 {{ checkIn }} to {{ checkOut }}</span>
+        }
+      </div>
+      <app-room-user-card [hotelId]="hotel()!.id" [hotel]="hotel()" [checkIn]="checkIn" [checkOut]="checkOut"></app-room-user-card>
+    </div>
+  } @else {
+    <!-- Loading -->
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p class="loading-text">Loading hotel details...</p>
+    </div>
+  }
+</div>

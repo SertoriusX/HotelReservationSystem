@@ -1,0 +1,230 @@
+/* Hotel Edit - Royal Style */
+.hotel-edit-royal {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.hotel-edit-royal h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #d4a373;
+  text-align: center;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+}
+
+.loading-state .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #eee;
+  border-top-color: #d4a373;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  color: #777;
+}
+
+/* Error State */
+.error-state {
+  text-align: center;
+  padding: 2rem;
+  background: #fee2e2;
+  border-radius: 4px;
+}
+
+.error-state span {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.error-state p {
+  color: #dc2626;
+}
+
+/* Form */
+.edit-form-royal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-section {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 4px;
+}
+
+.form-section h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.form-group-royal {
+  margin-bottom: 1rem;
+}
+
+.form-group-royal:last-child {
+  margin-bottom: 0;
+}
+
+.form-group-royal label {
+  display: block;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-control-royal {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+  background: white;
+}
+
+.form-control-royal:focus {
+  border-color: #d4a373;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
+}
+
+/* Payment Toggles */
+.payment-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.75rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.toggle-label:hover {
+  border-color: #d4a373;
+}
+
+.toggle-label input {
+  width: 18px;
+  height: 18px;
+  accent-color: #d4a373;
+}
+
+.toggle-switch {
+  display: none;
+}
+
+.toggle-text {
+  font-weight: 500;
+  color: #222;
+}
+
+.save-card-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 4px;
+}
+
+/* Actions */
+.form-actions-royal {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.btn-submit-royal {
+  background: #222;
+  color: white;
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-submit-royal:hover:not(:disabled) {
+  background: #d4a373;
+}
+
+.btn-submit-royal:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-cancel-royal {
+  background: #f5f5f5;
+  color: #555;
+  border: 1px solid #ddd;
+  padding: 0.875rem 2rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-cancel-royal:hover {
+  background: #eee;
+  color: #222;
+}
+
+@media (max-width: 576px) {
+  .hotel-edit-royal {
+    padding: 1rem;
+    margin: 1rem;
+  }
+  
+  .save-card-options {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions-royal {
+    flex-direction: column;
+  }
+}

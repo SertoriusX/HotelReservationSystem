@@ -1,0 +1,49 @@
+<div class="paypal-payment-container">
+  <h3>🅿️ PayPal Payment</h3>
+  
+  <div class="amount-display">
+    <span class="label">Amount:</span>
+    <span class="amount">${{ amount }}</span>
+  </div>
+
+  @if(loading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Creating PayPal order...</p>
+    </div>
+  }
+
+  @if(error()) {
+    <div class="alert alert-warning">
+      {{ error() }}
+    </div>
+  }
+
+  @if(!loading() && !paid()) {
+    <button 
+      class="paypal-btn"
+      (click)="createOrder()"
+    >
+      🅿️ Pay with PayPal
+    </button>
+
+    <button 
+      class="demo-btn"
+      (click)="handleDemoPayment()"
+    >
+      💰 Pay ${{ amount }} (Demo)
+    </button>
+  }
+
+  @if(paid()) {
+    <div class="success-message">
+      ✅ Payment successful!
+    </div>
+  }
+
+  <div class="payment-actions">
+    <button class="btn btn-secondary" (click)="onCancel()">
+      Cancel
+    </button>
+  </div>
+</div>

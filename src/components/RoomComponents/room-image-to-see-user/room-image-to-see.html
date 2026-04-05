@@ -1,0 +1,24 @@
+<div class="room-images">
+  @if (mainImage()) {
+    <img [src]="mainImage()" alt="Room Image" class="main-image rounded mb-3" style="width: 100%; height: 350px; object-fit: cover;">
+  } @else {
+    <div class="text-center py-5 bg-light rounded">
+      <p class="text-muted mb-0">No images available</p>
+    </div>
+  }
+
+  @if (imagesList.length > 1) {
+    <div class="d-flex flex-wrap gap-2">
+      @for (img of imagesList; track img.id) {
+        <img 
+          [src]="img.url" 
+          alt="Room Image" 
+          class="rounded"
+          style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 3px solid;"
+          [style.border-color]="mainImage() === img.url ? '#0d6efd' : '#dee2e6'"
+          (click)="selectImage(img.url)"
+        >
+      }
+    </div>
+  }
+</div>

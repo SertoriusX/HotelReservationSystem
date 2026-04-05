@@ -1,0 +1,299 @@
+<div class="bookings-list-royal">
+  @if (loading()) {
+    <div class="loading-state-bookings">
+      <div class="spinner"></div>
+      <p>Loading bookings...</p>
+    </div>
+  } @else if (error()) {
+    <div class="error-state-bookings">
+      <span>⚠️</span>
+      <p>{{ error() }}</p>
+    </div>
+  } @else if (filteredBookings().length === 0) {
+    <div class="empty-state-bookings">
+      <span>📋</span>
+      <p>No bookings yet</p>
+      @if(isOwner()) {
+        <button (click)="showQuickCreate = true" class="btn-create-booking">
+          ➕ Create Booking
+        </button>
+      }
+    </div>
+  } @else {
+    @if(isOwner()) {
+      <div class="bookings-header-royal">
+        <button (click)="showQuickCreate = !showQuickCreate" class="btn-header">
+          @if(showQuickCreate) {
+            ← Back to Bookings
+          } @else {
+            ➕ New Booking (Walk-in)
+          }
+        </button>
+      </div>
+    }
+    
+    @if(!showQuickCreate) {
+      @if(isOwner()) {
+        <div class="bookings-calendar-royal">
+          <div class="calendar-nav-royal">
+            <button type="button" (click)="calendarPrevMonth()">◀</button>
+            <span>{{ calendarMonthName }} {{ calendarYear }}</span>
+            <button type="button" (click)="calendarNextMonth()">▶</button>
+          </div>
+          <div class="calendar-grid-royal">
+            <div class="calendar-header-cell">Sun</div>
+            <div class="calendar-header-cell">Mon</div>
+            <div class="calendar-header-cell">Tue</div>
+            <div class="calendar-header-cell">Wed</div>
+            <div class="calendar-header-cell">Thu</div>
+            <div class="calendar-header-cell">Fri</div>
+            <div class="calendar-header-cell">Sat</div>
+            @for(day of calendarDays; track $index) {
+              @if(day.day === null) {
+                <div class="calendar-day-royal empty"></div>
+              } @else {
+                <div 
+                  class="calendar-day-royal"
+                  [class.has-booking]="getBookingsForDate(day.date!)"
+                >
+                  <span class="day-number">{{ day.day }}</span>
+                  @if(getBookingsForDate(day.date!)) {
+                    <div class="booking-dots">
+                      @for(i of getBookingDots(day.date!); track $index) {
+                        <span class="dot" [class.paid]="i.isPaid" [class.pending]="!i.isPaid"></span>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            }
+          </div>
+          <div class="calendar-legend-royal">
+            <span><span class="dot paid"></span> Paid</span>
+            <span><span class="dot pending"></span> Pending</span>
+          </div>
+        </div>
+      }
+    }
+    
+    @if(showQuickCreate) {
+      <div class="quick-create-royal">
+        <h4>📝 New Walk-in Booking</h4>
+        
+        <div class="form-group-royal">
+          <label>Select Room *</label>
+          <select [(ngModel)]="quickCreateRoomId" (ngModelChange)="onRoomChange()" class="form-control-royal">
+            <option [ngValue]="null">-- Select a room --</option>
+            @for(room of availableRooms(); track room.id) {
+              <option [ngValue]="room.id">{{ room.name }} - ${{ room.price }}/night</option>
+            }
+          </select>
+        </div>
+
+        @if(selectedRoomPrice) {
+          <div class="price-info-royal">
+            💰 Price: <strong>${{ selectedRoomPrice }}/night</strong>
+          </div>
+        }
+
+        <div class="form-row-royal">
+          <div class="form-group-royal">
+            <label>Guest Name *</label>
+            <input type="text" [(ngModel)]="quickCreateGuest" placeholder="Enter guest name" class="form-control-royal">
+          </div>
+        </div>
+
+        <div class="form-row-royal">
+          <div class="form-group-royal">
+            <label>Phone</label>
+            <input type="tel" [(ngModel)]="quickCreatePhone" placeholder="Phone number" class="form-control-royal">
+          </div>
+          <div class="form-group-royal">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="quickCreateEmail" placeholder="Email address" class="form-control-royal">
+          </div>
+        </div>
+
+        <div class="form-row-royal three-col">
+          <div class="form-group-royal">
+            <label>Check-in *</label>
+            <input type="date" [(ngModel)]="quickCreateCheckIn" (change)="calculateTotal()" class="form-control-royal">
+          </div>
+          <div class="form-group-royal">
+            <label>Check-out *</label>
+            <input type="date" [(ngModel)]="quickCreateCheckOut" (change)="calculateTotal()" class="form-control-royal">
+          </div>
+          <div class="form-group-royal">
+            <label>Guests *</label>
+            <input type="number" [(ngModel)]="quickCreateGuests" (change)="calculateTotal()" class="form-control-royal" min="1" max="10">
+          </div>
+        </div>
+
+        @if(quickCreateRoomId) {
+          <div class="availability-section">
+            <h5>📅 Room Availability</h5>
+            <div class="availability-calendar">
+              <div class="calendar-nav-royal">
+                <button type="button" (click)="prevMonth()">◀</button>
+                <span>{{ currentMonthName }} {{ currentYear }}</span>
+                <button type="button" (click)="nextMonth()">▶</button>
+              </div>
+              <div class="calendar-grid-royal">
+                <div class="calendar-header-cell">Sun</div>
+                <div class="calendar-header-cell">Mon</div>
+                <div class="calendar-header-cell">Tue</div>
+                <div class="calendar-header-cell">Wed</div>
+                <div class="calendar-header-cell">Thu</div>
+                <div class="calendar-header-cell">Fri</div>
+                <div class="calendar-header-cell">Sat</div>
+                @for(day of calendarDays; track $index) {
+                  @if(day.day === null) {
+                    <div class="calendar-day-royal empty"></div>
+                  } @else if(isDateDisabled(day.date!)) {
+                    <div class="calendar-day-royal disabled">{{ day.day }}</div>
+                  } @else if(isDateBooked(day.date!)) {
+                    <div class="calendar-day-royal booked">{{ day.day }}</div>
+                  } @else {
+                    <div class="calendar-day-royal available" (click)="selectDate(day)">{{ day.day }}</div>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        @if(totalNights > 0) {
+          <div class="summary-royal">
+            <p>{{ totalNights }} night(s) × ${{ selectedRoomPrice }} = <strong>${{ totalAmount }}</strong></p>
+          </div>
+        }
+
+        @if(overlapError) {
+          <div class="error-message-royal">{{ overlapError }}</div>
+        }
+
+        <div class="actions-royal">
+          <button (click)="showQuickCreate = false" class="btn-cancel-royal">Cancel</button>
+          <button (click)="createQuickBooking()" class="btn-success-royal" [disabled]="!canCreateQuickBooking() || !!overlapError">
+            ✅ Continue to Payment
+          </button>
+        </div>
+      </div>
+    }
+
+    @if(showPaymentSelection) {
+      <div class="payment-selection-royal">
+        <h4>💳 Select Payment Method</h4>
+        <p>Booking: {{ quickCreateCheckIn }} to {{ quickCreateCheckOut }} ({{ totalNights }} night(s)) - <strong>${{ totalAmount }}</strong></p>
+        
+        @if(processingPayment) {
+          <div class="processing-royal">
+            <div class="spinner"></div>
+            <p>Processing payment...</p>
+          </div>
+        } @else {
+          <div class="payment-methods-royal">
+            <div class="payment-option-royal" (click)="confirmWithPayment('stripe')">
+              <span class="icon">💳</span>
+              <span>Credit Card (Stripe)</span>
+            </div>
+            <div class="payment-option-royal" (click)="confirmWithPayment('paypal')">
+              <span class="icon">🅿️</span>
+              <span>PayPal</span>
+            </div>
+            <div class="payment-option-royal" (click)="confirmWithPayment('hotel')">
+              <span class="icon">🏨</span>
+              <span>Hotel Direct</span>
+            </div>
+            <div class="payment-option-royal" (click)="confirmWithPayment('payAtHotel')">
+              <span class="icon">💵</span>
+              <span>Pay at Hotel</span>
+            </div>
+          </div>
+        }
+        
+        <div class="actions-royal">
+          <button (click)="showPaymentSelection = false; showQuickCreate = true" class="btn-cancel-royal" [disabled]="processingPayment">← Back</button>
+        </div>
+      </div>
+    }
+    
+    <!-- Bookings Table -->
+    <div class="bookings-table-royal">
+      <table class="bookings-table">
+        <thead>
+          <tr>
+            <th>Room</th>
+            <th>Guest</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Payment</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (booking of paginatedBookings(); track booking.id) {
+            <tr>
+              <td class="room-cell">{{ booking.roomName || 'Room #' + booking.roomId }}</td>
+              <td>{{ booking.username || 'Guest' }}</td>
+              <td>{{ formatDate(booking.checkIn) }}</td>
+              <td>{{ formatDate(booking.checkOut) }}</td>
+              <td class="price-cell">${{ booking.totalPrice }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(booking.checkIn, booking.checkOut)">
+                  {{ getStatus(booking.checkIn, booking.checkOut) }}
+                </span>
+              </td>
+              <td>
+                @if(booking.status === 'Refunded') {
+                  <span class="badge-refunded">↩️ Refunded</span>
+                } @else if(booking.isPaid) {
+                  <span class="badge-paid">Paid</span>
+                } @else if(booking.paymentMethod === 'Pay at Hotel') {
+                  <span class="badge-payhotel">Pay at Hotel</span>
+                } @else if(hasSavedCard(booking)) {
+                  <span class="badge-autopay">💾 Auto-pay in {{ getDaysUntilAutoPay(booking.checkIn) }} days</span>
+                } @else {
+                  <span class="badge-unpaid">Unpaid</span>
+                }
+              </td>
+              <td>
+                @if (canUserPay(booking)) {
+                  <div class="action-buttons">
+                    <button (click)="userPayNow(booking)" class="btn-pay">💳 Pay Now</button>
+                    <button (click)="userCancelBooking(booking)" class="btn-cancel-action">Cancel</button>
+                  </div>
+                } @else if (canUserCancel(booking)) {
+                  <button (click)="userCancelBooking(booking)" class="btn-cancel-action">Cancel</button>
+                } @else if (canUpdatePayment(booking)) {
+                  <div class="action-buttons">
+                    <button (click)="confirmPayment(booking)" class="btn-confirm">✅ Paid</button>
+                    <button (click)="cancelBooking(booking)" class="btn-cancel-action">Cancel</button>
+                  </div>
+                } @else if (canConfirmPayment(booking)) {
+                  <div class="action-buttons">
+                    <button (click)="confirmPaymentAtHotel(booking)" class="btn-confirm">✅ Paid</button>
+                    <button (click)="cancelNoShow(booking)" class="btn-cancel-action">No Show</button>
+                  </div>
+                } @else if (canRefund(booking)) {
+                  <button (click)="refundBooking(booking)" class="btn-refund">💰 Refund</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    
+    @if (totalPages() > 1) {
+      <div class="pagination-royal">
+        <button (click)="prevPage()" [disabled]="currentPage() === 1" class="btn-page">← Prev</button>
+        <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage() === totalPages()" class="btn-page">Next →</button>
+      </div>
+    }
+  }
+</div>
